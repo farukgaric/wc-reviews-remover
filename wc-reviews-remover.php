@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WooCommerce Reviews Remover
  * Description: Removes all WooCommerce reviews via background process
- * Version: 0.0.2
+ * Version: 0.0.3
  * Author: Faruk Garić
  * Author URI: https://www.farukgaric.com/
  * License: MIT

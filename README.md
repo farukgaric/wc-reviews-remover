@@ -29,6 +29,10 @@ This plugin removes all WooCommerce reviews via background process. It provides 
 
 ## Changelog
 
+### 0.0.3
+- Fixed duplicate progress messages
+- Improved UI clarity during review removal process
+
 ### 0.0.2
 - Added progress bar and status updates
 - Implemented batch processing via AJAX
