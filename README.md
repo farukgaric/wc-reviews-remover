@@ -1,5 +1,3 @@
-Write a readme for the plugin
-
 # WooCommerce Reviews Remover
 
 ## Description
