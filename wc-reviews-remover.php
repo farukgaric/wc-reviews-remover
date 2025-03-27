@@ -16,12 +16,48 @@ if (!defined('ABSPATH')) {
 class WC_Reviews_Remover {
     private $batch_size = 50; // Number of reviews to process per batch
     
-    /**
+       /**
      * Initialize the remover
      */
     public function __construct() {
         add_action('admin_init', array($this, 'maybe_handle_removal'));
         add_action('wp_ajax_wc_remove_reviews', array($this, 'ajax_remove_reviews'));
+        add_action('admin_menu', array($this, 'add_admin_menu'));
+    }
+    
+    /**
+     * Add admin menu item
+     */
+    public function add_admin_menu() {
+        add_submenu_page(
+            'woocommerce',              // Parent slug (WooCommerce menu)
+            'Remove Reviews',           // Page title
+            'Remove Reviews',           // Menu title
+            'manage_options',           // Capability required
+            'wc-reviews-remover',       // Menu slug
+            array($this, 'render_admin_page') // Callback function
+        );
+    }
+    
+    /**
+     * Render the admin page
+     */
+    public function render_admin_page() {
+        ?>
+        <div class="wrap">
+            <h1>Remove WooCommerce Reviews</h1>
+            <p>Click the button below to remove all WooCommerce product reviews. This action cannot be undone.</p>
+            <form method="get">
+                <input type="hidden" name="wc_remove_reviews" value="1">
+                <?php wp_nonce_field('wc_remove_reviews'); ?>
+                <p>
+                    <button type="submit" class="button button-primary" onclick="return confirm('Are you sure you want to remove all reviews? This action cannot be undone.');">
+                        Remove All Reviews
+                    </button>
+                </p>
+            </form>
+        </div>
+        <?php
     }
     
     /**
