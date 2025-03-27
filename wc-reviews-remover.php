@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WooCommerce Reviews Remover
  * Description: Removes all WooCommerce reviews via background process
- * Version: 0.0.1
+ * Version: 0.0.2
  * Author: Faruk Garić
  * Author URI: https://www.farukgaric.com/
  * License: MIT
@@ -106,7 +106,6 @@ class WC_Reviews_Remover {
                 <div class="progress-bar">
                     <div class="progress" style="width: 0%"></div>
                 </div>
-                <p>Processed <span class="processed">0</span> of <span class="total"><?php echo $total; ?></span> reviews</p>
                 <p class="status">Starting...</p>
             </div>
         </div>
