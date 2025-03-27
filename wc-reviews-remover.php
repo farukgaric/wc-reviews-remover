@@ -20,7 +20,6 @@ class WC_Reviews_Remover {
      * Initialize the remover
      */
     public function __construct() {
-        add_action('admin_init', array($this, 'maybe_handle_removal'));
         add_action('wp_ajax_wc_remove_reviews', array($this, 'ajax_remove_reviews'));
         add_action('admin_menu', array($this, 'add_admin_menu'));
     }
@@ -43,11 +42,20 @@ class WC_Reviews_Remover {
      * Render the admin page
      */
     public function render_admin_page() {
+        // Check if removal process should start
+        if (isset($_POST['wc_remove_reviews']) && check_admin_referer('wc_remove_reviews')) {
+            $total = $this->get_total_reviews_count();
+            $this->enqueue_scripts();
+            $this->show_progress_ui($total);
+            return;
+        }
+
+        // Show the initial form
         ?>
         <div class="wrap">
             <h1>Remove WooCommerce Reviews</h1>
             <p>Click the button below to remove all WooCommerce product reviews. This action cannot be undone.</p>
-            <form method="get">
+            <form method="post" action="">
                 <input type="hidden" name="wc_remove_reviews" value="1">
                 <?php wp_nonce_field('wc_remove_reviews'); ?>
                 <p>
@@ -58,31 +66,6 @@ class WC_Reviews_Remover {
             </form>
         </div>
         <?php
-    }
-    
-    /**
-     * Check if we need to start the removal process
-     */
-    public function maybe_handle_removal() {
-        if (isset($_GET['wc_remove_reviews']) && current_user_can('manage_options')) {
-            check_admin_referer('wc_remove_reviews');
-            $this->start_removal_process();
-        }
-    }
-    
-    /**
-     * Start the removal process via AJAX
-     */
-    private function start_removal_process() {
-        // Get total count of reviews
-        $total = $this->get_total_reviews_count();
-        
-        // Enqueue our script
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
-        
-        // Show progress UI
-        $this->show_progress_ui($total);
-        exit;
     }
     
     /**
